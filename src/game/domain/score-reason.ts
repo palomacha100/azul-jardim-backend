@@ -1,0 +1,6 @@
+export enum ScoreReason {
+  FLOWER_GROUP = "FLOWER_GROUP",
+  BONUS = "BONUS",
+  PENALTY = "PENALTY",
+  FINAL_SCORING = "FINAL_SCORING",
+}
