@@ -17,7 +17,9 @@ describe("RegisterScore", () => {
       playerName: "Ana",
     });
 
-    new StartGame(repository).execute("game-1");
+    new StartGame(repository).execute({
+      gameId: "game-1"
+    });
 
     const registerScore = new RegisterScore(repository);
 

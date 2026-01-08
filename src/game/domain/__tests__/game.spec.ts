@@ -1,7 +1,9 @@
+import { GameAlreadyStartedError } from "../errors/game-already-started.error";
 import { Game } from "../game";
 import { Player } from "../player";
 import { ScoreEntry } from "../score-entry";
 import { ScoreReason } from "../score-reason";
+import { Round } from "../round"
 
 describe("Game", () => {
   it("does not allow scoring before game starts", () => {
@@ -14,7 +16,7 @@ describe("Game", () => {
       game.registerScore(
         new ScoreEntry({
           playerId: "p1",
-          round: 1,
+          round: Round.create(1),
           reason: ScoreReason.BONUS,
           value: 3,
         }),
@@ -32,7 +34,7 @@ describe("Game", () => {
     game.registerScore(
       new ScoreEntry({
         playerId: "p1",
-        round: 1,
+        round: Round.create(1),
         reason: ScoreReason.BONUS,
         value: 3,
       }),
@@ -52,11 +54,22 @@ describe("Game", () => {
       game.registerScore(
         new ScoreEntry({
           playerId: "p2",
-          round: 1,
+          round: Round.create(1),
           reason: ScoreReason.BONUS,
           value: 3,
         }),
       );
     }).toThrow();
+  });
+
+  it('throws error if game is started twice', () => {
+    const game = new Game('game-1');
+    game.addPlayer(new Player('p1', 'Ana'));
+
+    game.start();
+
+    expect(() => {
+      game.start();
+    }).toThrow(GameAlreadyStartedError);
   });
 });

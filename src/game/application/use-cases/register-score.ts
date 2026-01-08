@@ -2,6 +2,7 @@ import { GameRepository } from "../ports/game-repository";
 import { ScoreEntry } from "../../domain/score-entry";
 import { ScoreReason } from "../../domain/score-reason";
 import { Round } from "../../domain/round";
+import { GameNotFoundError } from "../errors/game-not-found.error";
 
 export class RegisterScore {
   constructor(private readonly gameRepository: GameRepository) {}
@@ -16,7 +17,7 @@ export class RegisterScore {
     const game = this.gameRepository.findById(params.gameId);
 
     if (!game) {
-      throw new Error("Game not found");
+      throw new GameNotFoundError(params.gameId);
     }
 
     const entry = new ScoreEntry({

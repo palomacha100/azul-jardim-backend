@@ -1,3 +1,4 @@
+import { GameAlreadyStartedError } from "./errors/game-already-started.error";
 import { Player } from "./player";
 import { ScoreBoard } from "./score-board";
 import { ScoreEntry } from "./score-entry";
@@ -26,6 +27,9 @@ export class Game {
   }
 
   start(): void {
+    if (this.status !== GameStatus.CREATED) {
+      throw new GameAlreadyStartedError();
+    }
     if (this.players.length === 0) {
       throw new Error("Cannot start game without players");
     }

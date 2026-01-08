@@ -1,13 +1,12 @@
 export class Round {
-  private constructor(readonly value: number) {}
+  readonly value: number;
+  private constructor(value: number) {
+    this.value = value;
+  }
 
   static create(value: number): Round {
-    if (!Number.isInteger(value)) {
-      throw new Error("Round must be an integer");
-    }
-
-    if (value < 1) {
-      throw new Error("Round must be greater than or equal to 1");
+    if (!Number.isInteger(value) || value <= 0) {
+      throw new Error("Round must be a positive integer");
     }
 
     return new Round(value);

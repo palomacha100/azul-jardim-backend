@@ -1,13 +1,14 @@
+import { GameNotFoundError } from "../errors/game-not-found.error";
 import { GameRepository } from "../ports/game-repository";
 
 export class StartGame {
   constructor(private readonly gameRepository: GameRepository) {}
 
-  execute(gameId: string): void {
-    const game = this.gameRepository.findById(gameId);
+  execute(params: { gameId: string }): void {
+    const game = this.gameRepository.findById(params.gameId);
 
     if (!game) {
-      throw new Error("Game not found");
+      throw new GameNotFoundError(params.gameId);
     }
 
     game.start();

@@ -16,7 +16,9 @@ describe("StartGame", () => {
     });
 
     const startGame = new StartGame(repository);
-    startGame.execute("game-1");
+    startGame.execute({
+      gameId: "game-1"
+    });
 
     const game = repository.findById("game-1");
 
@@ -28,7 +30,9 @@ describe("StartGame", () => {
     const startGame = new StartGame(repository);
 
     expect(() => {
-      startGame.execute("non-existent");
+      startGame.execute({
+        gameId: "non-existent",
+      });
     }).toThrow("Game not found");
   });
 });
