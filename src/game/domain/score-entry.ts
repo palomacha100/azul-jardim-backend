@@ -1,16 +1,17 @@
 import { ScoreReason } from "./score-reason";
 import { ScoringRules } from "./scoring-rules";
+import { Round } from "./round";
 
 export class ScoreEntry {
   readonly playerId: string;
-  readonly round: number;
+  readonly round: Round;
   readonly reason: ScoreReason;
   readonly value: number;
   readonly createdAt: Date;
 
   constructor(params: {
     playerId: string;
-    round: number;
+    round: Round;
     reason: ScoreReason;
     value: number;
   }) {

@@ -1,6 +1,7 @@
 import { GameRepository } from "../ports/game-repository";
 import { ScoreEntry } from "../../domain/score-entry";
 import { ScoreReason } from "../../domain/score-reason";
+import { Round } from "../../domain/round";
 
 export class RegisterScore {
   constructor(private readonly gameRepository: GameRepository) {}
@@ -20,7 +21,7 @@ export class RegisterScore {
 
     const entry = new ScoreEntry({
       playerId: params.playerId,
-      round: params.round,
+      round: Round.create(params.round),
       reason: params.reason,
       value: params.value,
     });

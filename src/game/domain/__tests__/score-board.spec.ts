@@ -1,6 +1,7 @@
 import { ScoreBoard } from "../score-board";
 import { ScoreEntry } from "../score-entry";
 import { ScoreReason } from "../score-reason";
+import { Round } from "../round"
 
 describe("ScoreBoard", () => {
   it("calculates total score for a player", () => {
@@ -9,7 +10,7 @@ describe("ScoreBoard", () => {
     board.addEntry(
       new ScoreEntry({
         playerId: "p1",
-        round: 1,
+        round: Round.create(1),
         reason: ScoreReason.BONUS,
         value: 3,
       }),
@@ -18,7 +19,7 @@ describe("ScoreBoard", () => {
     board.addEntry(
       new ScoreEntry({
         playerId: "p1",
-        round: 2,
+        round: Round.create(2),
         reason: ScoreReason.PENALTY,
         value: -1,
       }),
@@ -33,7 +34,7 @@ describe("ScoreBoard", () => {
     board.addEntry(
       new ScoreEntry({
         playerId: "p1",
-        round: 1,
+        round: Round.create(1),
         reason: ScoreReason.BONUS,
         value: 5,
       }),
@@ -42,7 +43,7 @@ describe("ScoreBoard", () => {
     board.addEntry(
       new ScoreEntry({
         playerId: "p2",
-        round: 1,
+        round: Round.create(1),
         reason: ScoreReason.BONUS,
         value: 3,
       }),
