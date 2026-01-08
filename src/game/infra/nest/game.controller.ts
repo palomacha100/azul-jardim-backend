@@ -9,6 +9,9 @@ import { AddPlayerToGame } from '../../application/use-cases/add-player-to-game'
 import { StartGame } from '../../application/use-cases/start-game';
 import { RegisterScore } from '../../application/use-cases/register-score';
 import { ScoreReason } from '../../domain/score-reason';
+import { CreateGameDto } from './dtos/create-game.dto';
+import { AddPlayerDto } from './dtos/add-player.dto';
+import { RegisterScoreDto } from './dtos/register-score.dto';
 
 @Controller('games')
 export class GameController {
@@ -27,14 +30,14 @@ export class GameController {
     ) {}
 
     @Post()
-    create(@Body() body: { gameId: string }) {
+    create(@Body() body: CreateGameDto) {
         return this.createGame.execute(body.gameId);
     }
 
     @Post(':id/players')
     addPlayerToGame(
         @Param('id') gameId: string,
-        @Body() body: { playerId: string; playerName: string},
+        @Body() body: AddPlayerDto,
     ) {
         this.addPlayer.execute({ gameId, ...body });
         return { status: 'ok' };
@@ -49,13 +52,7 @@ export class GameController {
     @Post(':id/scores')
     registerScoreToGame(
         @Param('id') gameId: string,
-        @Body()
-        body: {
-            playerId: string;
-            round: number;
-            reason: ScoreReason;
-            value: number;
-        },
+        @Body() body: RegisterScoreDto,
     ) {
         this.registerScore.execute({ gameId, ...body });
         return { status: 'ok' };
