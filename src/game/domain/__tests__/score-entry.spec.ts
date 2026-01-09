@@ -1,6 +1,7 @@
 import { ScoreEntry } from "../score-entry";
 import { ScoreReason } from "../score-reason";
 import { Round } from "../../domain/round";
+import { InvalidScoreValueError } from "../errors/invalid-score-value.error";
 
 describe("ScoryEntry", () => {
   it("creates a valid score entry for FLOWER_GROUP", () => {
@@ -22,6 +23,6 @@ describe("ScoryEntry", () => {
         reason: ScoreReason.PENALTY,
         value: 3,
       });
-    }).toThrow();
+    }).toThrow(InvalidScoreValueError);
   });
 });

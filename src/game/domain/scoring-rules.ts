@@ -1,4 +1,5 @@
 import { ScoreReason } from "./score-reason";
+import { InvalidScoreValueError } from "./errors/invalid-score-value.error";
 
 export class ScoringRules {
   static validate(reason: ScoreReason, value: number): void {
@@ -17,7 +18,7 @@ export class ScoringRules {
 
       case ScoreReason.PENALTY:
         if (value > -1 || value < -5) {
-          throw new Error("PENALTY must be between -1 and -5");
+          throw new InvalidScoreValueError();
         }
         break;
 
