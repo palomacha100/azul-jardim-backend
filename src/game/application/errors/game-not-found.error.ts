@@ -1,7 +1,7 @@
 import { ApplicationError } from "./application-error";
 
 export class GameNotFoundError extends ApplicationError {
-    constructor(gameId: string) {
+    constructor() {
         super("Game not found");
     }
 }

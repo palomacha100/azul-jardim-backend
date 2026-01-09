@@ -1,18 +1,23 @@
 import { GameNotFoundError } from "../errors/game-not-found.error";
 import { GameRepository } from "../ports/game-repository";
+import { StartGameInput } from "../dtos/start-game.input";
+import { StartGameOutput } from "../dtos/start-game.output";
 
 export class StartGame {
   constructor(private readonly gameRepository: GameRepository) {}
 
-  execute(params: { gameId: string }): void {
-    const game = this.gameRepository.findById(params.gameId);
-
-    if (!game) {
-      throw new GameNotFoundError(params.gameId);
+  execute(input: StartGameInput): StartGameOutput {
+    const game = this.gameRepository.findById(input.gameId);
+    
+    if (!game) { 
+      throw new GameNotFoundError();
     }
-
+    
     game.start();
 
-    this.gameRepository.save(game);
+    return {
+      gameId: game.id,
+      status: "IN_PROGRESS"
+    }
   }
 }
