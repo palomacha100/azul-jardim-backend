@@ -2,6 +2,7 @@ import { StartGame } from "../use-cases/start-game";
 import { InMemoryGameRepository } from "../infra/in-memory-game-repository";
 import { CreateGame } from "../use-cases/create-game";
 import { AddPlayerToGame } from "../use-cases/add-player-to-game";
+import { GameNotFoundError } from "../../application/errors/game-not-found.error"
 
 describe("StartGame", () => {
   it("starts a game with players", () => {
@@ -33,6 +34,6 @@ describe("StartGame", () => {
       startGame.execute({
         gameId: "non-existent",
       });
-    }).toThrow("Game not found");
+    }).toThrow(GameNotFoundError);
   });
 });

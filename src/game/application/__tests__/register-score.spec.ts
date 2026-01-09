@@ -4,6 +4,7 @@ import { CreateGame } from "../use-cases/create-game";
 import { AddPlayerToGame } from "../use-cases/add-player-to-game";
 import { StartGame } from "../use-cases/start-game";
 import { ScoreReason } from "../../domain/score-reason";
+import { GameNotFoundError } from "../../application/errors/game-not-found.error"
 
 describe("RegisterScore", () => {
   it("registers a score for a player in a active game", () => {
@@ -47,6 +48,6 @@ describe("RegisterScore", () => {
         reason: ScoreReason.BONUS,
         value: 3,
       });
-    }).toThrow("Game not found");
+    }).toThrow(GameNotFoundError);
   });
 });
