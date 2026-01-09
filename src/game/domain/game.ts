@@ -4,6 +4,7 @@ import { ScoreBoard } from "./score-board";
 import { ScoreEntry } from "./score-entry";
 import { GameNotInProgressError } from "./errors/game-not-in-progress.error";
 import { PlayerNotInGameError } from "./errors/player-not-in-game.error";
+import { CannotAddPlayersAfterGameStartError } from "./errors/cannot-add-players-after-game-start.error";
 
 export enum GameStatus {
   CREATED = "CREATED",
@@ -23,7 +24,7 @@ export class Game {
 
   addPlayer(player: Player): void {
     if (this.status !== GameStatus.CREATED) {
-      throw new Error("Cannot add players after game start");
+      throw new CannotAddPlayersAfterGameStartError();
     }
     this.players.push(player);
   }

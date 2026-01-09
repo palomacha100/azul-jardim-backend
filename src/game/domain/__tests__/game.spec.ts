@@ -6,6 +6,7 @@ import { ScoreReason } from "../score-reason";
 import { Round } from "../round"
 import { GameNotInProgressError } from "../errors/game-not-in-progress.error";
 import { PlayerNotInGameError } from "../errors/player-not-in-game.error";
+import { CannotAddPlayersAfterGameStartError } from "../errors/cannot-add-players-after-game-start.error";
 
 describe("Game", () => {
   it("does not allow scoring before game starts", () => {
@@ -73,5 +74,15 @@ describe("Game", () => {
     expect(() => {
       game.start();
     }).toThrow(GameAlreadyStartedError);
+  });
+
+  it('does not allow adding players after game start', () => {
+    const game = new Game('g1');
+    game.addPlayer(new Player('p1', 'Ana'));
+    game.start();
+
+    expect(() => {
+      game.addPlayer(new Player('p2', 'João'));
+    }).toThrow(CannotAddPlayersAfterGameStartError);
   });
 });
