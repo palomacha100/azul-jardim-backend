@@ -1,6 +1,7 @@
-export class InvalidScoreValueError extends Error {
+import { DomainError } from "./domain-error"
+
+export class InvalidScoreValueError extends DomainError {
     constructor() {
         super('Invalid score value for score reason');
-        this.name = 'InvalidScoreValueError';
     }
 }

@@ -1,6 +1,7 @@
-export class CannotAddPlayersAfterGameStartError extends Error {
+import { DomainError } from "./domain-error"
+
+export class CannotAddPlayersAfterGameStartError extends DomainError {
     constructor() {
         super("Cannot add players after game start")
-        this.name = "CannotAddPlayersAfterGameStartError"
     }
 }
