@@ -10,7 +10,7 @@ describe("RegisterScore", () => {
   it("registers a score for a player in a active game", () => {
     const repository = new InMemoryGameRepository();
 
-    new CreateGame(repository).execute("game-1");
+    new CreateGame(repository).execute({ gameId: "game-1" });
 
     new AddPlayerToGame(repository).execute({
       gameId: "game-1",

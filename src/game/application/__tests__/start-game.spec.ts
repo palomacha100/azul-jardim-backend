@@ -8,7 +8,7 @@ describe("StartGame", () => {
   it("starts a game with players", () => {
     const repository = new InMemoryGameRepository();
 
-    new CreateGame(repository).execute("game-1");
+    new CreateGame(repository).execute({gameId: "game-1" });
 
     new AddPlayerToGame(repository).execute({
       gameId: "game-1",

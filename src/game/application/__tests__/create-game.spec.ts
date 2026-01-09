@@ -6,10 +6,14 @@ describe("CreateGame", () => {
     const repository = new InMemoryGameRepository();
     const createGame = new CreateGame(repository);
 
-    const game = createGame.execute("game-1");
+    const result = createGame.execute({ gameId: "game-1" });
 
-    const storedGame = repository.findById("game-1");
+    expect(result).toEqual({
+      gameId: 'game-1',
+      status: 'CREATED'
+    });
 
-    expect(game).toBe(storedGame);
+    const storedGame = repository.findById('game-1');
+    expect(storedGame).not.toBeNull();
   });
 });
