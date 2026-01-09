@@ -4,6 +4,8 @@ import { Player } from "../player";
 import { ScoreEntry } from "../score-entry";
 import { ScoreReason } from "../score-reason";
 import { Round } from "../round"
+import { GameNotInProgressError } from "../errors/game-not-in-progress.error";
+import { PlayerNotInGameError } from "../errors/player-not-in-game.error";
 
 describe("Game", () => {
   it("does not allow scoring before game starts", () => {
@@ -21,7 +23,7 @@ describe("Game", () => {
           value: 3,
         }),
       );
-    }).toThrow();
+    }).toThrow(GameNotInProgressError);
   });
 
   it("allows scoring after game starts", () => {
@@ -59,7 +61,7 @@ describe("Game", () => {
           value: 3,
         }),
       );
-    }).toThrow();
+    }).toThrow(PlayerNotInGameError);
   });
 
   it('throws error if game is started twice', () => {

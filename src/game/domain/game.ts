@@ -2,6 +2,8 @@ import { GameAlreadyStartedError } from "./errors/game-already-started.error";
 import { Player } from "./player";
 import { ScoreBoard } from "./score-board";
 import { ScoreEntry } from "./score-entry";
+import { GameNotInProgressError } from "./errors/game-not-in-progress.error";
+import { PlayerNotInGameError } from "./errors/player-not-in-game.error";
 
 export enum GameStatus {
   CREATED = "CREATED",
@@ -38,13 +40,13 @@ export class Game {
 
   registerScore(entry: ScoreEntry): void {
     if (this.status !== GameStatus.IN_PROGRESS) {
-      throw new Error("Game is not in progress");
+      throw new GameNotInProgressError();
     }
 
     const playerExists = this.players.some((p) => p.id === entry.playerId);
 
     if (!playerExists) {
-      throw new Error("Player does not belong to this game");
+      throw new PlayerNotInGameError();
     }
 
     this.scoreBoard.addEntry(entry);
