@@ -1,24 +1,26 @@
 import { AddPlayerToGame } from "../use-cases/add-player-to-game";
 import { InMemoryGameRepository } from "../infra/in-memory-game-repository";
 import { CreateGame } from "../use-cases/create-game";
+import { GameNotFoundError } from "../errors/game-not-found.error";
 
 describe("AddPlayerToGame", () => {
   it("adds a player to an existing game", () => {
     const repository = new InMemoryGameRepository();
 
-    const createGame = new CreateGame(repository);
-    createGame.execute({ gameId: "game-1" });
+    new CreateGame(repository).execute({ gameId: 'game-1'});
 
-    const addPlayer = new AddPlayerToGame(repository);
-    addPlayer.execute({
+    const addPlayer = new AddPlayerToGame(repository)
+
+    const result = addPlayer.execute({
       gameId: "game-1",
-      playerId: "player-1",
+      playerId: "p1",
       playerName: "Ana",
     });
 
-    const game = repository.findById("game-1");
-
-    expect(game).toBeDefined();
+    expect(result).toEqual({
+      gameId: 'game-1',
+      playerId: 'p1'
+    });
   });
 
   it("throws error if game does not exist", () => {
@@ -31,6 +33,6 @@ describe("AddPlayerToGame", () => {
         playerId: "player-1",
         playerName: "Ana",
       });
-    }).toThrow("Game not found");
+    }).toThrow(GameNotFoundError);
   });
 });
