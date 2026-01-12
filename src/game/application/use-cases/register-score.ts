@@ -3,32 +3,36 @@ import { ScoreEntry } from "../../domain/score-entry";
 import { ScoreReason } from "../../domain/score-reason";
 import { Round } from "../../domain/round";
 import { GameNotFoundError } from "../errors/game-not-found.error";
+import { RegisterScoreInput } from "../dtos/register-score.input";
+import { RegisterScoreOutput } from "../dtos/register-score.output";
 
 export class RegisterScore {
   constructor(private readonly gameRepository: GameRepository) {}
 
-  execute(params: {
-    gameId: string;
-    playerId: string;
-    round: number;
-    reason: ScoreReason;
-    value: number;
-  }): void {
-    const game = this.gameRepository.findById(params.gameId);
+  execute(input: RegisterScoreInput): RegisterScoreOutput {
+    const game = this.gameRepository.findById(input.gameId);
 
     if (!game) {
-      throw new GameNotFoundError(params.gameId);
+      throw new GameNotFoundError();
     }
 
+    const round = Round.create(input.round)
+
     const entry = new ScoreEntry({
-      playerId: params.playerId,
-      round: Round.create(params.round),
-      reason: params.reason,
-      value: params.value,
+      playerId: input.playerId,
+      round,
+      reason: input.reason,
+      value: input.value,
     });
 
     game.registerScore(entry);
 
-    this.gameRepository.save(game);
+    const totalScore = game.getScore(input.playerId);
+
+    return {
+      gameId: game.id,
+      playerId: input.playerId,
+      totalScore,
+    };
   }
 }

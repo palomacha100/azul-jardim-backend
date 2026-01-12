@@ -11,20 +11,17 @@ describe("RegisterScore", () => {
     const repository = new InMemoryGameRepository();
 
     new CreateGame(repository).execute({ gameId: "game-1" });
-
     new AddPlayerToGame(repository).execute({
       gameId: "game-1",
       playerId: "player-1",
       playerName: "Ana",
     });
 
-    new StartGame(repository).execute({
-      gameId: "game-1"
-    });
+    new StartGame(repository).execute({ gameId: "game-1" });
 
     const registerScore = new RegisterScore(repository);
 
-    registerScore.execute({
+    const result = registerScore.execute({
       gameId: "game-1",
       playerId: "player-1",
       round: 1,
@@ -32,8 +29,12 @@ describe("RegisterScore", () => {
       value: 3,
     });
 
-    const game = repository.findById("game-1");
-    expect(game?.getScore("player-1")).toBe(3);
+   
+    expect(result).toEqual({
+      gameId: 'game-1',
+      playerId: 'player-1',
+      totalScore: 3,
+    });
   });
 
   it("throws error if game does not exist", () => {
