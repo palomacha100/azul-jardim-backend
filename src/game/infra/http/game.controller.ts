@@ -25,4 +25,30 @@ export class GameController {
             return handleHttpError(error, res);
         }
     }
+
+    async addPlayer(req: Request, res: Response) {
+        try {
+            const result = this.addPlayerToGame.execute({
+                gameId: req.params.gameId,
+                playerId: req.body.playerId,
+                playerName: req.body.playerName,
+            });
+
+            return res.status(201).json(result);
+        } catch (error) {
+            return handleHttpError(error, res);
+        }
+    }
+
+    async start(req: Request, res: Response) {
+        try {
+            const result = this.startGame.execute({
+               gameId: req.params.gameId,
+            });
+
+            return res.status(200).json(result);
+        } catch (error) {
+            return handleHttpError(error, res)
+        }
+    }
 }

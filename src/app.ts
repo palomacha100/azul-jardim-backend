@@ -26,4 +26,9 @@ const gameController = new GameController(
 
 app.post("/games", (req, res) => gameController.create(req, res));
 
+app.post("/games/:gameId/players", (req, res) => gameController.addPlayer(req, res));
+
+app.post("/games/:gameId/start", (req, res) =>
+    gameController.start(req, res), 
+);
 export { app };
