@@ -1,4 +1,6 @@
 import express from "express";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./shared/http/swagger";
 import { GameController } from "./game/infra/http/game.controller";
 import { InMemoryGameRepository } from "./game/application/infra/in-memory-game-repository";
 import { CreateGame } from "./game/application/use-cases/create-game";
@@ -9,6 +11,8 @@ import { RegisterScore } from "./game/application/use-cases/register-score";
 const app = express();
 
 app.use(express.json());
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const gameRepository = new InMemoryGameRepository();
 
