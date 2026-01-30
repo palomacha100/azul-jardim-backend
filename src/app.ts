@@ -31,4 +31,8 @@ app.post("/games/:gameId/players", (req, res) => gameController.addPlayer(req, r
 app.post("/games/:gameId/start", (req, res) =>
     gameController.start(req, res), 
 );
+
+app.post("/games/:gameId/scores", (req, res) =>
+  gameController.registerScore(req, res),
+)
 export { app };

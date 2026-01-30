@@ -10,7 +10,7 @@ export class GameController {
         private readonly createGame: CreateGame,
         private readonly startGame: StartGame,
         private readonly addPlayerToGame: AddPlayerToGame,
-        private readonly registerScore: RegisterScore,
+        private readonly registerScoreUseCase: RegisterScore,
     ) {}
 
 
@@ -49,6 +49,22 @@ export class GameController {
             return res.status(200).json(result);
         } catch (error) {
             return handleHttpError(error, res)
+        }
+    }
+
+    async registerScore(req: Request, res: Response) {
+        try {
+            const result = this.registerScoreUseCase.execute({
+                gameId: req.params.gameId,
+                playerId: req.body.playerId,
+                round: req.body.round,
+                reason: req.body.reason,
+                value: req.body.value,
+            });
+
+            return res.status(200).json(result);
+        } catch (error) {
+            return handleHttpError(error, res);
         }
     }
 }
