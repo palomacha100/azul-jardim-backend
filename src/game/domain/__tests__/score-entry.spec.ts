@@ -25,4 +25,25 @@ describe("ScoryEntry", () => {
       });
     }).toThrow(InvalidScoreValueError);
   });
+
+  it("creates a valid INITIAL_SCORE entry with value 15", () => {
+  const entry = new ScoreEntry({
+    playerId: "p1",
+    reason: ScoreReason.INITIAL_SCORING,
+    value: 15,
+  });
+
+  expect(entry.value).toBe(15);
+});
+
+it("throws error if INITIAL_SCORE is not 15", () => {
+  expect(() => {
+    new ScoreEntry({
+      playerId: "p1",
+      reason: ScoreReason.INITIAL_SCORING,
+      value: 10,
+    });
+  }).toThrow();
+});
+
 });

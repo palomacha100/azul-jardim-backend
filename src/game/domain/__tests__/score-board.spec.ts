@@ -4,7 +4,7 @@ import { ScoreReason } from "../score-reason";
 import { Round } from "../round"
 
 describe("ScoreBoard", () => {
-  it("calculates total score for a player", () => {
+  it("calculates total score including multiple entries", () => {
     const board = new ScoreBoard();
 
     board.addEntry(
@@ -25,7 +25,15 @@ describe("ScoreBoard", () => {
       }),
     );
 
-    expect(board.getScoreForPlayer("p1")).toBe(2);
+    board.addEntry(
+      new ScoreEntry({
+        playerId: "p1",
+        reason: ScoreReason.INITIAL_SCORING,
+        value: 15,
+      })
+    )
+
+    expect(board.getScoreForPlayer("p1")).toBe(17);
   });
 
   it("keeps scores separeted per player", () => {

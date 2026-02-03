@@ -28,6 +28,12 @@ export class ScoringRules {
         }
         break;
 
+        case ScoreReason.INITIAL_SCORING:
+          if (value !== 15) {
+            throw new Error("Initial score must be 15")
+          }
+          break;
+
       default:
         throw new Error("Unknown score reason");
     }

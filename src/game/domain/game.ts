@@ -5,6 +5,8 @@ import { ScoreEntry } from "./score-entry";
 import { GameNotInProgressError } from "./errors/game-not-in-progress.error";
 import { PlayerNotInGameError } from "./errors/player-not-in-game.error";
 import { CannotAddPlayersAfterGameStartError } from "./errors/cannot-add-players-after-game-start.error";
+import { Round } from "./round";
+import { ScoreReason } from "./score-reason";
 
 export enum GameStatus {
   CREATED = "CREATED",
@@ -27,7 +29,22 @@ export class Game {
       throw new CannotAddPlayersAfterGameStartError();
     }
     this.players.push(player);
+    this.giveInitialScore(player.id);
   }
+
+    private giveInitialScore(playerId: string): void {
+      if (this.scoreBoard.hasInitialScore(playerId)) {
+        return
+      }
+
+      this.scoreBoard.addEntry (
+        new ScoreEntry({
+          playerId,
+          reason: ScoreReason.INITIAL_SCORING,
+          value: 15
+        })
+      )
+    }
 
   start(): void {
     if (this.status !== GameStatus.CREATED) {

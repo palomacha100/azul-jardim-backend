@@ -43,7 +43,7 @@ describe("Game", () => {
       }),
     );
 
-    expect(game.getScore("p1")).toBe(3);
+    expect(game.getScore("p1")).toBe(18);
   });
 
   it("does not allow scoring for player not in game", () => {
@@ -85,4 +85,11 @@ describe("Game", () => {
       game.addPlayer(new Player('p2', 'João'));
     }).toThrow(CannotAddPlayersAfterGameStartError);
   });
+
+  it('gives initial score of 15 when player is added', () => {
+    const game = new Game('g1');
+    game.addPlayer(new Player('p1', 'Ana'));
+    
+    expect(game.getScore('p1')).toBe(15)
+  })
 });

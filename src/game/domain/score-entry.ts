@@ -4,14 +4,14 @@ import { Round } from "./round";
 
 export class ScoreEntry {
   readonly playerId: string;
-  readonly round: Round;
+  readonly round?: Round;
   readonly reason: ScoreReason;
   readonly value: number;
   readonly createdAt: Date;
 
   constructor(params: {
     playerId: string;
-    round: Round;
+    round?: Round;
     reason: ScoreReason;
     value: number;
   }) {

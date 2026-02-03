@@ -33,7 +33,7 @@ describe("RegisterScore", () => {
     expect(result).toEqual({
       gameId: 'game-1',
       playerId: 'player-1',
-      totalScore: 3,
+      totalScore: 18,
     });
   });
 
