@@ -1,31 +1,105 @@
-# Azul – Jardim da Rainha | Backend
+# 🌿 Azul Jardim – Game API
 
-This project is a backend application designed to support the game **Azul – Jardim da Rainha**, with an initial focus on game scoring and match management.
+API REST para gerenciamento do ciclo de um jogo, desenvolvida com **TypeScript**, **Express** e **Clean Architecture**, com domínio rico, regras bem encapsuladas e documentação OpenAPI (Swagger).
 
-The goal of this project is not only to provide a functional API, but also to serve as a learning-oriented, production-minded backend architecture.  
-Business rules are carefully modeled at the domain level, independent of frameworks, and validated through automated tests.
+Este projeto foi construído com foco em **boas práticas de arquitetura**, separação de responsabilidades e clareza de regras de negócio.
 
-The system is built following a layered architecture approach, separating domain logic, application use cases, and infrastructure concerns to ensure clarity, testability, and long-term maintainability.
+---
 
+## 🧠 Visão Geral
 
-## Application Use Cases (MVP)
+A API permite:
 
-This backend supports the following application use cases:
+- Criar um jogo
+- Adicionar jogadores
+- Iniciar o jogo
+- Registrar pontuações seguindo regras de domínio
 
-- CreateGame  
-  Creates a new game instance in CREATED state.
+Todo o fluxo é controlado pelo **domínio**, não pelo controller, garantindo consistência e evitando estados inválidos.
 
-- AddPlayerToGame  
-  Adds a player to an existing game before it starts.
+---
 
-- StartGame  
-  Transitions a game from CREATED to IN_PROGRESS.
+## 🏗️ Arquitetura
 
-- RegisterScore  
-  Registers a scoring event for a player during an active game.
+O projeto segue os princípios da **Clean Architecture**, dividido em camadas bem definidas:
 
-- GetScoreBoard  
-  Returns the current score for all players in a game.
+src/
+├── game/
+│ ├── domain/ # Entidades, Value Objects e regras de negócio
+│ ├── application/ # Casos de uso e contratos (DTOs)
+│ └── infra/ # Controllers HTTP e repositórios em memória
+├── shared/
+│ └── http/ # Error mapper e Swagger
+├── app.ts # Configuração do Express e rotas
+└── server.ts # Bootstrap do servidor
 
-All business rules are enforced at the domain level.
+## 🔗 Endpoints Disponíveis
 
+### Criar jogo
+
+POST /games
+
+```json
+{
+  "gameId": "game-1"
+}
+```
+
+### Adicionar jogador
+
+POST /games/{gameId}/players
+
+```json
+{
+  "playerId": "p1",
+  "playerName": "Ana"
+}
+```
+
+### Iniciar jogo
+
+POST /games/{gameId}/start
+
+### Registrar pontuação
+
+POST /games/{gameId}/scores
+
+```json
+{
+  "playerId": "p1",
+  "round": 1,
+  "reason": "BONUS",
+  "value": 3
+}
+```
+
+### Documentação (Swagger)
+
+A documentação interativa da API está disponível em:
+http://localhost:3000/docs
+
+## Como rodar o projeto
+Pré-requisitos
+
+Node.js (>= 18)
+
+npm
+
+### Instalação
+npm install
+
+### Rodar o servidor
+npx ts-node src/server.ts
+
+O servidor irá iniciar em:
+http://localhost:3000
+
+## Testes
+
+O projeto possui testes unitários para:
+Domínio (entidades, regras e Value Objects)
+Casos de uso (application layer)
+Os testes garantem que:
+regras não sejam violadas
+erros sejam lançados corretamente
+o comportamento do domínio seja previsível
