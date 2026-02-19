@@ -5,8 +5,8 @@ import { ScoreEntry } from "./score-entry";
 import { GameNotInProgressError } from "./errors/game-not-in-progress.error";
 import { PlayerNotInGameError } from "./errors/player-not-in-game.error";
 import { CannotAddPlayersAfterGameStartError } from "./errors/cannot-add-players-after-game-start.error";
-import { Round } from "./round";
 import { ScoreReason } from "./score-reason";
+import { PlayerReserve } from "./player-reserve";
 
 export enum GameStatus {
   CREATED = "CREATED",
@@ -19,6 +19,8 @@ export class Game {
   private status: GameStatus = GameStatus.CREATED;
   private readonly players: Player[] = [];
   private readonly scoreBoard = new ScoreBoard();
+  private reserves: Map<string, PlayerReserve> = new Map();
+  private jokers: Map<string, number> = new Map();
 
   constructor(id: string) {
     this.id = id;
@@ -30,6 +32,8 @@ export class Game {
     }
     this.players.push(player);
     this.giveInitialScore(player.id);
+    this.reserves.set(player.id, new PlayerReserve());
+    this.jokers.set(player.id, 3);
   }
 
     private giveInitialScore(playerId: string): void {
@@ -46,6 +50,37 @@ export class Game {
       )
     }
 
+  addPiecesToPlayer(playerId: string, color: string, amount: number): void {
+    const reserve = this.reserves.get(playerId);
+    if (!reserve) throw new Error("Player reserve not found");
+
+    reserve.addPieces(color, amount);
+  }
+
+  placeHexagonon(playerId: string, color: string, requiredPieces: number): void {
+    const reserve = this.reserves.get(playerId);
+    if (!reserve) throw new Error("reserve not found");
+
+    const realPieces = reserve.getPieces(color);
+    const jokers = this.jokers.get(playerId) ?? 0;
+
+    if (realPieces == 0) {
+      throw new Error("Must have at least one real piece");
+    }
+
+    const missingPieces = requiredPieces - realPieces;
+
+    if(missingPieces > 0 ) {
+      if (jokers < missingPieces) {
+        throw new Error("Not enough pieces or jokers");
+      }
+    
+      this.jokers.set(playerId, jokers - missingPieces);
+    }
+
+    reserve.consumePieces(color, Math.min(realPieces, requiredPieces));
+  }
+
   start(): void {
     if (this.status !== GameStatus.CREATED) {
       throw new GameAlreadyStartedError();
@@ -54,6 +89,10 @@ export class Game {
       throw new Error("Cannot start game without players");
     }
     this.status = GameStatus.IN_PROGRESS;
+  }
+
+  getJokers(playerId: string): number {
+    return this.jokers.get(playerId) ?? 0;
   }
 
   registerScore(entry: ScoreEntry): void {

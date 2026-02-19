@@ -92,4 +92,30 @@ describe("Game", () => {
     
     expect(game.getScore('p1')).toBe(15)
   })
+
+  it ("allow completing payment with jokers when placing hexagon", () => {
+    const game = new Game('g1');
+    const player = new Player("p1", "Ana");
+
+    game.addPlayer(player);
+    game.start();
+
+    game.addPiecesToPlayer("p1", "blue", 1);
+
+    game.placeHexagonon("p1", "blue", 3);
+
+    expect(game.getJokers("p1")).toBe(1);
+  })
+
+  it ("does not allow placing hexagon using only jokers", () => {
+    const game= new Game('g1');
+    const player = new Player('p1', 'Ana');
+
+    game.addPlayer(player);
+    game.start();
+
+    expect(() => {
+      game.placeHexagonon('p1', 'blue', 2);
+    }).toThrow("Must have at least one real piece");
+  });
 });
