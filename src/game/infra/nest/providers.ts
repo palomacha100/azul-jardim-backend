@@ -4,12 +4,14 @@ import { AddPlayerToGame } from "../../application/use-cases/add-player-to-game"
 import { StartGame } from "../../application/use-cases/start-game";
 import { RegisterScore } from "../../application/use-cases/register-score";
 import { GameRepository } from "../../application/ports/game-repository";
+import { AddPiecesToPlayer } from "../../application/use-cases/add-pieces-to-player";
 
 export const GAME_REPOSITORY = 'GAME_REPOSITORY';
 export const CREATE_GAME = 'CREATE_GAME';
 export const ADD_PLAYER_TO_GAME = 'ADD_PLAYER_TO_GAME';
 export const START_GAME = 'START_GAME';
 export const REGISTER_SCORE = 'REGISTER_SCORE';
+export const ADD_PIECES_TO_PLAYER = 'ADD_PIECES_TO_PLAYER'
 
 export const gameProviders =[
     {
@@ -36,4 +38,9 @@ export const gameProviders =[
         useFactory: (repo: GameRepository) => new RegisterScore(repo),
         inject: [GAME_REPOSITORY],
     },
+    {
+        provide: ADD_PIECES_TO_PLAYER,
+        useFactory: ( repo: GameRepository) => new AddPiecesToPlayer(repo),
+        inject: [GAME_REPOSITORY],
+    }
 ];
